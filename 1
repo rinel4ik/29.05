@@ -1,0 +1,100 @@
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace FactoryMethod
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Выберите тип доставки: \n1.Пицца \n2.Бургер \n3.Cуши");
+            int choice = int.Parse(Console.ReadLine());
+            Delivery delivery = null;
+
+            switch (choice)
+            {
+                case 1:
+                    Console.WriteLine("Вы выбрали доставку: Пицца");
+                    delivery = new PizzaDelivery();
+                    break;
+                case 2:
+                    Console.WriteLine("Вы выбрали доставку: Бургер");
+                    delivery = new BurgerDelivery();
+                    break;
+                case 3:
+                    Console.WriteLine("Вы выбрали доставку: Суши");
+                    delivery = new SushiDelivery();
+                    break;
+            }
+            delivery.Deliver();
+        }
+    }
+
+    public abstract class Food
+    {
+        public abstract void Prepair();
+    }
+
+    public class Pizza : Food
+    {
+        public override void Prepair()
+        {
+            Console.WriteLine("Пицца готовится с сыром и томатами");
+        }
+    }
+    public class Sushi : Food
+    {
+        public override void Prepair()
+        {
+            Console.WriteLine("Суши готовятся с рисом и рыбой");
+        }
+    }
+    public class Burger : Food
+    {
+        public override void Prepair()
+        {
+            Console.WriteLine("Бургер готовится с котлетой, сыром и булкой");
+        }
+    }
+
+    public abstract class Delivery
+    {
+        public abstract Food CreateFood();    //фабричный метод
+
+        public void Deliver()
+        {
+            var food = CreateFood();//заказ на еду
+            food.Prepair();//рецепт
+        }
+    }
+
+    public class PizzaDelivery : Delivery
+    {
+        public override Food CreateFood()
+        {
+            Console.WriteLine("Пицца доставляется в коробке.");
+            return new Pizza();
+        }
+    }
+
+    public class BurgerDelivery : Delivery
+    {
+        public override Food CreateFood()
+        {
+            Console.WriteLine("Бургеры доставляются в крафтовом пакете.");
+            return new Burger();
+        }
+    }
+    public class SushiDelivery : Delivery
+    {
+        public override Food CreateFood()
+        {
+            Console.WriteLine("Бургеры доставляются в крафтовом пакете.");
+            return new Sushi();
+        }
+    }
+}
