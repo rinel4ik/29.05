@@ -1,0 +1,53 @@
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Prototype
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+
+            Orderset orderset1 = new Orderset("Пицца", "Суши", "Бургер");
+            Orderset orderset2 = orderset1.Clone();
+
+            orderset2.Sushi = null;
+            Console.WriteLine("Базовый набор");
+            Console.WriteLine(orderset1);
+            Console.WriteLine("Клонированный набор (изменённый):");
+            Console.WriteLine(orderset2);
+        }
+    }
+    public interface ICloneablePrototype<T>
+    {
+        T Clone();
+    }
+
+    public class Orderset : ICloneablePrototype<Orderset>
+    {
+        public string Pizza { get; set; }
+        public string Sushi { get; set; }
+        public string Burger { get; set; }
+
+        public Orderset(string pizza, string sushi, string burger)
+        {
+            Pizza = pizza;
+            Sushi = sushi;
+            Burger = burger;
+        }
+
+        public override string ToString()
+        {
+            return $"{Pizza}\n{Sushi}\n{Burger}";
+        }
+
+        public Orderset Clone()
+        {
+            return (Orderset)MemberwiseClone();
+        }
+    }
+}
